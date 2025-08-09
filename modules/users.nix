@@ -13,4 +13,13 @@
     enable = true;
     enableSSHSupport = true;
   };
+
+  # Sudo policy: wheel can sudo, require tty
+  security.sudo = {
+    enable = true;
+    wheelNeedsPassword = true;
+    extraConfig = ''
+      Defaults requiretty
+    '';
+  };
 }
