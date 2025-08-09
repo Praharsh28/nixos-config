@@ -1,0 +1,68 @@
+# ~/.config/starship.toml
+
+# Don't print a new line at the start of the prompt
+add_newline = false
+
+# Make prompt a single line instead of two lines
+[line_break]
+disabled = false
+
+# Replace the "❯" symbol with "→" in the prompt
+[character]
+success_symbol = "[→](bold green)"
+error_symbol = "[→](bold red)"
+vimcmd_symbol = "[←](bold green)"
+
+# Disable the package module, hiding it from the prompt completely
+[package]
+disabled = true
+
+# Use custom format
+format = """
+[](#9A348E)\
+$username\
+$hostname\
+$directory\
+$git_branch\
+$git_status\
+$nix_shell\
+$cmd_duration\
+$line_break\
+$character"""
+
+[username]
+style_user = "bg:#9A348E fg:#FFFFFF"
+style_root = "bg:#9A348E fg:#FF0000"
+format = '[$user ]($style)'
+disabled = false
+show_always = true
+
+[hostname]
+ssh_only = false
+format = '[@$hostname ](bg:#9A348E fg:#FFFFFF)'
+disabled = false
+
+[directory]
+style = "bg:#DA627D fg:#FFFFFF"
+format = "[ $path ]($style)"
+truncation_length = 3
+truncation_symbol = "…/"
+
+[git_branch]
+symbol = ""
+style = "bg:#FCA17D fg:#000000"
+format = '[ $symbol $branch ]($style)'
+
+[git_status]
+style = "bg:#FCA17D fg:#000000"
+format = '[$all_status$ahead_behind ]($style)'
+
+[nix_shell]
+symbol = "❄️ "
+style = "bg:#86BBD8 fg:#000000"
+format = '[ $symbol$state( \($name\)) ]($style)'
+
+[cmd_duration]
+min_time = 500
+style = "bg:#33658A fg:#FFFFFF"
+format = '[ $duration ]($style)'
