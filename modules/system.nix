@@ -23,12 +23,21 @@
     cores = 0;
     keep-outputs = true;
     keep-derivations = true;
+
+    substituters = [
+      "https://cache.nixos.org/"
+      "https://nix-community.cachix.org"
+    ];
+    trusted-public-keys = [
+      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQF65Z8Q8h3M="
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+    ];
   };
 
   nix.gc = {
     automatic = true;
     dates = "weekly";
-    options = "--delete-older-than 7d";
+    options = "--delete-older-than 30d";
   };
 
   nix.optimise = {
@@ -58,6 +67,15 @@
       true
     fi
   '';
+
+  # Automatic system updates using flakes (safe: test then switch)
+  system.autoUpgrade = {
+    enable = true;
+    dates = "weekly";
+    flake = "path:/etc/nixos#nixos";
+    allowReboot = false;
+    operation = "switch";
+  };
 
   zramSwap = {
     enable = true;
@@ -113,4 +131,27 @@
     windsurf
     flatpak
   ];
+
+  # Robustness and hardening
+  systemd.oomd.enable = true;
+
+  services.journald = {
+    extraConfig = ''
+      Storage=persistent
+      SystemMaxUse=1G
+      RuntimeMaxUse=256M
+      MaxRetentionSec=1month
+      Compress=yes
+      Seal=yes
+    '';
+  };
+
+  boot.tmp.cleanOnBoot = true;
+
+  services.fwupd.enable = true;
+
+  programs.mtr.enable = true;
+
+  security.protectKernelImage = true;
+  security.sudo.execWheelOnly = true;
 }

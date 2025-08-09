@@ -42,4 +42,23 @@
   };
 
   services.power-profiles-daemon.enable = false;
+
+  # Hardened OpenSSH and time sync
+  services.openssh = {
+    enable = true;
+    settings = {
+      PasswordAuthentication = false;
+      KbdInteractiveAuthentication = false;
+      PermitRootLogin = "no";
+      X11Forwarding = false;
+      AllowTcpForwarding = "no";
+      ClientAliveInterval = 300;
+      ClientAliveCountMax = 2;
+      # Modern ciphers/MACs/KexAlgorithms are defaults in recent releases, ensure no weak ones are used
+    };
+    openFirewall = false;
+  };
+
+  time.timeZone = lib.mkDefault "Asia/Kolkata";
+  services.timesyncd.enable = true;
 }

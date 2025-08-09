@@ -21,8 +21,8 @@
     ./modules/wine.nix
     ./modules/iso-tools.nix
     ./modules/torrent.nix
-    ./modules/sandbox-gaming.nix
-  ];
+         ./modules/sandbox-gaming.nix
+   ];
 
   nixpkgs.config.allowUnfree = true;
 }
